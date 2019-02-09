@@ -4,6 +4,7 @@ namespace VMdevelopment\TapPayment\Services;
 
 use Illuminate\Support\Facades\Validator;
 use VMdevelopment\TapPayment\Abstracts\AbstractService;
+use VMdevelopment\TapPayment\Resources\Invoice;
 
 class Charge extends AbstractService
 {
@@ -159,13 +160,13 @@ class Charge extends AbstractService
 				[
 					'form_params' => $this->attributes,
 					'headers'     => [
-						'Authorization' => 'Bearer sk_test_XKokBfNWv6FIYuTMg5sLPjhJ',
+						'Authorization' => 'Bearer ' . config( 'tap-payment.auth.api_key' ),
 						'Accept'        => 'application/json',
 					]
 				]
 			);
 
-			return json_decode( $response->getBody()->getContents() );
+			return new Invoice( json_decode( $response->getBody()->getContents(), true ) );
 		}
 		catch ( \Throwable $exception ) {
 			throw new \Exception( $exception->getMessage() );
@@ -179,20 +180,27 @@ class Charge extends AbstractService
 	 */
 	public function pay()
 	{
+		$rules = [
+			'id'           => 'regex:/^$/i',
+			'amount'       => 'required',
+			'currency'     => 'required',
+			'source.id'    => 'required',
+			'redirect.url' => 'required',
+		];
+		foreach ( config( 'tap-payment.customer.requirements' ) as $item ) {
+			if ( $item == 'mobile' ) {
+				$rules['customer.phone'] = 'required';
+				$rules['customer.phone.country_code'] = [ 'required', 'numeric' ];
+				$rules['customer.phone.number'] = [ 'required', 'numeric' ];
+			} else {
+				$rules[ 'customer.' . $item ] = 'required';
+			}
+		}
+
 		if (
 		$this->validateAttributes(
+			$rules,
 			[
-				'id'                          => 'regex:/^$/i',
-				'amount'                      => 'required',
-				'currency'                    => 'required',
-				'customer.first_name'         => 'required',
-				'customer.email'              => 'required',
-				'customer.phone'              => 'required',
-				'customer.phone.country_code' => 'required',
-				'customer.phone.number'       => 'required',
-				'source.id'                   => 'required',
-				'redirect.url'                => 'required',
-			], [
 				'id.regex' => "ID should be empty when you create a new Charge."
 			]
 		)

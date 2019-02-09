@@ -29,8 +29,13 @@ return [
     */
 
 	"auth" => [
-		"username"     => env( 'TAP_PAYMENT_USERNAME' ),
-		"password"     => env( 'TAP_PAYMENT_PASSWORD' ),
-		"access_token" => env( 'TAP_PAYMENT_PASSWORD' )
+		"api_key" => env( 'TAP_PAYMENT_API_KEY' )
+	],
+
+	'customer' => [
+		'requirements' => [
+			'first_name',
+			'mobile',
+		]
 	]
 ];
