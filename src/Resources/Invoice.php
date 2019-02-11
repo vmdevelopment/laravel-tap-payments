@@ -31,7 +31,9 @@ class Invoice
 			'x_created'           => $this->attributes['transaction']['created'] ?? null,
 		];
 
-		$data['x_amount'] = number_format( $data['x_amount'], 3, '.', '' );
+		$decimals = $data['x_currency'] == 'KWD' ? 3 : 2;
+
+		$data['x_amount'] = number_format( $data['x_amount'], $decimals, '.', '' );
 
 		$stringToHash = implode(
 			'',
