@@ -19,6 +19,12 @@ class Invoice
 	}
 
 
+	public function isInitiated()
+	{
+		return isset( $this->attributes['status'] ) && strtolower( $this->attributes['status'] ) == 'initiated';
+	}
+
+
 	public function getPaymetUrl()
 	{
 		return $this->attributes['transaction']['url'] ?? null;
