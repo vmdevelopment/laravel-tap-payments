@@ -30,6 +30,12 @@ class Invoice
 		return $this->attributes['transaction']['url'] ?? null;
 	}
 
+
+	public function getId()
+	{
+		return $this->attributes['id'] ?? null;
+	}
+
 	public function checkHash( $hash )
 	{
 		$data = [
