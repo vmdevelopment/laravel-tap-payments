@@ -21,7 +21,6 @@ class Invoice
 
 	public function checkHash( $hash )
 	{
-		// todo discuss hash checking logic
 		$data = [
 			'x_id'                => $this->attributes['id'] ?? null,
 			'x_amount'            => $this->attributes['amount'] ?? null,
@@ -32,18 +31,22 @@ class Invoice
 			'x_created'           => $this->attributes['transaction']['created'] ?? null,
 		];
 
+		$data['x_amount'] = number_format( $data['x_amount'], 3, '.', '' );
+
 		$stringToHash = implode(
 			'',
 			array_map(
 				function( $value, $key ) {
-					return $key . '=' . (string)$value;
+					return $key . $value;
 				},
 				$data,
 				array_keys( $data )
 			)
 		);
 
-		$hashedString = hash_hmac( 'sha256', $stringToHash, config( 'tap-payment.auth.api_key' ) );
+		$key = config( 'tap-payment.auth.api_key' );
+
+		$hashedString = hash_hmac( 'sha256', $stringToHash, $key );
 
 		return $hashedString == $hash;
 	}
