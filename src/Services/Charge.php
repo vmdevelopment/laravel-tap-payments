@@ -175,7 +175,7 @@ class Charge extends AbstractService
 
 
 	/**
-	 * @return mixed
+	 * @return Invoice
 	 * @throws \GuzzleHttp\Exception\GuzzleException|\Exception
 	 */
 	public function pay()

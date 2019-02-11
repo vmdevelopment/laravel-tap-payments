@@ -19,6 +19,11 @@ class Invoice
 	}
 
 
+	public function getPaymetUrl()
+	{
+		return $this->attributes['transaction']['url'] ?? null;
+	}
+
 	public function checkHash( $hash )
 	{
 		$data = [
