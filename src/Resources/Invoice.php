@@ -36,6 +36,12 @@ class Invoice
 		return $this->attributes['id'] ?? null;
 	}
 
+
+	public function getMetaData()
+	{
+		return $this->attributes['metadata'] ?? null;
+	}
+
 	public function checkHash( $hash )
 	{
 		$data = [
