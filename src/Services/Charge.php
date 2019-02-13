@@ -100,6 +100,12 @@ class Charge extends AbstractService
 	}
 
 
+	public function setMetaData( array $meta )
+	{
+		$this->attributes['metadata'] = $meta;
+	}
+
+
 	public function setRawAttributes( array $attributes )
 	{
 		$this->attributes = $attributes;
