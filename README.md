@@ -88,7 +88,7 @@ public function pay()
     $payment->isSuccess() // check if TapPayment has successfully handled request.
 }
 ```
-### Find ApiInvoice `AccessToken`
+### Find ApiInvoice
 ```php
 public function check( $id )
 {
