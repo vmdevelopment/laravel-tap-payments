@@ -72,12 +72,12 @@ public function pay()
 		$payment->setCurrency( "KWD" );
 		
 		$payment->setSource( "src_kw.knet" );
+        
+		$payment->setRedirectUrl( "https://example.com" );
 
-        $payment->setRedirectUrl( "https://example.com" );
+		$payment->setPostUrl( "https://example.com" ); // if you are using post request to handle payment updates
 
-        $payment->setPostUrl( "https://example.com" ); // if you are using post request to handle payment updates
-
-        $payment->setMetaData( [ 'package' => json_encode( $package ) ] ); // if you want to send metadata
+		$payment->setMetaData( [ 'package' => json_encode( $package ) ] ); // if you want to send metadata
 
 		$invoice = $payment->pay();
 		
